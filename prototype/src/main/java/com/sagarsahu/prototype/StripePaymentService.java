@@ -1,12 +1,14 @@
+package com.sagarsahu.prototype;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-package com.sagarsahu.prototype;
 
-public class StripePaymentService {
+public class StripePaymentService implements PaymentService {
     private Map<String, Double> transactions = new HashMap<>();
     private double accountBalance = 0.0;
 
+    @Override
     // Process a payment and store it with a transaction ID
     public String processPayment(double amount) {
         if (amount <= 0) {
@@ -21,6 +23,7 @@ public class StripePaymentService {
         return transactionId;
     }
 
+    @Override
     // Check if a balance is approved (e.g., cannot go negative)
     public boolean isApproved(double balance) {
         boolean approved = balance >= 0.00;
@@ -28,6 +31,7 @@ public class StripePaymentService {
         return approved;
     }
 
+    @Override
     // Refund a transaction
     public boolean refundPayment(String transactionId) {
         if (!transactions.containsKey(transactionId)) {
@@ -42,12 +46,14 @@ public class StripePaymentService {
         return true;
     }
 
+    @Override
     // Get account balance
     public double getAccountBalance() {
         System.out.println("Current Account Balance: " + accountBalance);
         return accountBalance;
     }
 
+    @Override
     // Simulate fraud check
     public boolean performFraudCheck(double amount) {
         boolean flagged = amount > 5000; // simple rule: >5000 flagged

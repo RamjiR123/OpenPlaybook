@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PrototypeApplication {
 
 	public static void main(String[] args) {
-        SpringApplication.run(PrototypeApplication.class, args);
+        // SpringApplication.run(PrototypeApplication.class, args);
+        var orderService = new OrderService();
+
+        orderService.setPaymentService(new StripePaymentService);
+        orderService.placeOrder();
+
 	}
 
 }

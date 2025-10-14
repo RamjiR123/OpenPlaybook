@@ -15,4 +15,8 @@ public class OrderService {
         // PaymentService paymentService = new StripePaymentService();
         paymentService.processPayment(100.0);
     }
+
+    public void setPaymentService(StripePaymentService stripePaymentService) {
+        this.paymentService = stripePaymentService;
+    }
 }

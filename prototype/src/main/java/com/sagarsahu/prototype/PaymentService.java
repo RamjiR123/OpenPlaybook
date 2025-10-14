@@ -5,4 +5,5 @@ public interface PaymentService {
     boolean refundPayment(String transactionId);
     double getAccountBalance();
     boolean performFraudCheck(double amount);
+    boolean isApproved(double balance);
 }

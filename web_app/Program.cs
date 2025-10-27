@@ -1,15 +1,20 @@
+using web_app.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// add mvc controllers etc
 builder.Services.AddControllersWithViews();
+
+// register keyword extractor service so controllers can use it
+builder.Services.AddSingleton<IKeywordService, KeywordService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// basic prod vs dev setup
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error");
+    // default hsts is 30 days. you can change this later if you want
     app.UseHsts();
 }
 
@@ -17,11 +22,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+// map api routes like /api/keywords/extract
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
+// anything not /api/... falls back to react (index.html)
 app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
-//import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
-import { Footer } from './components/Footer';
-import { Home } from './components/Home';
-import './custom.css';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
+import KeywordPlayground from "./components/KeywordPlayground";
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render() {
-    return (
-      <div>
+function App() {
+  return (
+    <>
+      <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path='/' element={<Home />} />
+            {/* home / landing page */}
+            <Route path="/" element={<Home />} />
+
+            {/* keyword tester page */}
+            <Route path="/keywords" element={<KeywordPlayground />} />
           </Routes>
         </Layout>
-        <Footer />
-      </div>
-    );
-  }
+      </BrowserRouter>
+
+      <Footer />
+    </>
+  );
 }
+
+export default App;

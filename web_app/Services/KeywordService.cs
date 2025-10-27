@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace web_app.Services
 {
-    // this is basically BaseballKeywordExtractor but as a service for the api + frontend
+    //this is basically BaseballKeywordExtractor but as a service for the api + frontend
     //
-    // notes:
-    // - keeps your style: all caps keywords like "WORLD SERIES"
-    // - adds years 2010-2025
-    // - returns ordered list of matches (not a unique set, we keep order on purpose)
+    //notes:
+    //-keeps your style: all caps keywords like "WORLD SERIES"
+    //-adds years 2010-2025
+    //-returns ordered list of matches (not a unique set, we keep order on purpose)
     public class KeywordService : IKeywordService
     {
         //keywords
@@ -18,10 +18,10 @@ namespace web_app.Services
             "WON", "LOST", "ALCS", "NLCS", "ALDS", "NLDS", "WILD CARD", "CHAMPIONSHIP", "WORLD SERIES"
         };
 
-        // regex for multiple word keywords (such as "world series")
+        //regex for multiple word keywords (such as "world series")
         private readonly List<Regex> _keywordPatterns = new List<Regex>();
 
-        // ctor sets up year keywords + compiles regex once
+        //ctor sets up year keywords + compiles regex once
         public KeywordService()
         {
             InitializeKeywords();
@@ -34,7 +34,7 @@ namespace web_app.Services
             for (int y = 2010; y <= 2025; y++)
                 _keywords.Add(y.ToString());
 
-            // regex for multiple word keywords (such as "world series")
+            //regex for multiple word keywords (such as "world series")
             foreach (var kw in _keywords)
             {
                 _keywordPatterns.Add(
@@ -43,25 +43,25 @@ namespace web_app.Services
             }
         }
 
-        // makes input all caps (to not be case-sensitive)
-        // returns ordered keyword matches
-        // filter is the dropdown mode from the ui
+        //makes input all caps (to not be case-sensitive)
+        //returns ordered keyword matches
+        //filter is the dropdown mode from the ui
         public List<string> ExtractKeywords(string rawInput, int filterMode)
         {
             if (rawInput == null)
                 rawInput = string.Empty;
 
-            // filter mode
-            // -1 for default, 0 for "team", 1 for "player", 2 for "game", and 3 for "quarter/period"
+            //filter mode
+            //-1 for default, 0 for "team", 1 for "player", 2 for "game", and 3 for "quarter/period"
             int filter = filterMode;
 
-            // right now we are not branching on filter. later we can if we want to:
-            // ex: if filter == 1 only care about player stuff, etc.
+            //right now we are not branching on filter. later we can if we want to:
+            //ex: if filter == 1 only care about player stuff, etc.
 
-            // uppercase it
+            //uppercase it
             string input = rawInput.ToUpperInvariant();
 
-            // track where each match happened so we can sort by index later
+            //track where each match happened so we can sort by index later
             var found = new List<(int idx, string kw)>();
 
             for (int i = 0; i < _keywords.Count; i++)
@@ -78,11 +78,11 @@ namespace web_app.Services
                 }
             }
 
-            // sorts based on what came first in the user text
-            // this keeps some basic grammar-ish ordering of what the user asked
+            //sorts based on what came first in the user text
+            //this keeps some basic grammar-ish ordering of what the user asked
             found.Sort((a, b) => a.idx.CompareTo(b.idx));
 
-            // copy to vector
+            //copy to vector
             var result = new List<string>(found.Count);
             foreach (var f in found)
                 result.Add(f.kw);
@@ -90,9 +90,9 @@ namespace web_app.Services
             return result;
         }
 
-        // this is for keywords with spaces (such as "world series")
-        // split on spaces, escape each piece, and allow any whitespace between
-        // so "world        series" still hits
+        //this is for keywords with spaces (such as "world series")
+        //split on spaces, escape each piece, and allow any whitespace between
+        //so "world        series" still hits
         private static string BuildWordBoundaryPattern(string keywordAllCaps)
         {
             var parts = keywordAllCaps.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -100,10 +100,10 @@ namespace web_app.Services
             for (int i = 0; i < parts.Length; i++)
                 parts[i] = Regex.Escape(parts[i]);
 
-            // "\s+" between parts lets multiword phrases still match
+            //"\s+" between parts lets multiword phrases still match
             string middle = string.Join(@"\s+", parts);
 
-            // \b ... \b so we don't match partial words
+            //\b ... \b so we don't match partial words
             return $@"\b{middle}\b";
         }
     }

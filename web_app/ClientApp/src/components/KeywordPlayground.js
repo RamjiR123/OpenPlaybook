@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 
 function KeywordPlayground() {
-  // user text box
+  //user text box
   const [query, setQuery] = useState("");
 
-  // keyword vector result from backend
+  //keyword vector result from backend
   const [vector, setVector] = useState([]);
 
-  // status msg (just basic feedback)
+  //status msg (just basic feedback)
   const [status, setStatus] = useState("");
 
-  // dropdown state. this is what we send to backend.
-  // 0 = team, 1 = player, 2 = game, 3 = quarter/period
-  // default is team (0)
+  //dropdown state. this is what we send to backend.
+  //0 = team, 1 = player, 2 = game, 3 = quarter/period
+  //default is team (0)
   const [filterMode, setFilterMode] = useState(0);
 
-  // calls POST /api/keywords/extract with {query: "...", filter: <int>}
+  //calls POST /api/keywords/extract with {query: "...", filter: <int>}
   const handleExtract = async (e) => {
     e.preventDefault();
 
-    // reset stuff before request
+    //reset stuff before request
     setStatus("...working");
     setVector([]);
 
@@ -42,7 +42,7 @@ function KeywordPlayground() {
 
       const data = await res.json();
 
-      // data.vector should be list of strings
+      //data.vector should be list of strings
       setVector(data.vector || []);
       setStatus("done");
     } catch (err) {
@@ -60,7 +60,7 @@ function KeywordPlayground() {
       </p>
 
       <form onSubmit={handleExtract} className="mb-3">
-        {/* row with dropdown + query box label */}
+        {/*row with dropdown + query box label*/}
         <div className="mb-3">
           <div className="row g-3">
             <div className="col-sm-4 col-md-3">
@@ -102,7 +102,7 @@ function KeywordPlayground() {
         <strong>status:</strong> {status || "idle"}
       </div>
 
-      {/* echo current filter mode int so you can see what got sent */}
+      {/*echo current filter mode int so you can see what got sent*/}
       <div className="mb-2">
         <strong>filter mode (int):</strong> {filterMode}
       </div>

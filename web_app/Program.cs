@@ -8,6 +8,9 @@ builder.Services.AddControllersWithViews();
 // register keyword extractor service so controllers can use it
 builder.Services.AddSingleton<IKeywordService, KeywordService>();
 
+// world series data loader (kaggle snapshot) --> will learn how to use kagglehub
+builder.Services.AddSingleton<WorldSeriesService>();
+
 var app = builder.Build();
 
 // basic prod vs dev setup

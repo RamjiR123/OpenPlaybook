@@ -1,9 +1,8 @@
 namespace web_app.Models
 {
     // body we accept from the frontend
-    // example:
     // {
-    //   "query": "who won the alcs in 2018 and the world series",
+    //   "query": "who won the alcs in 2016 and the world series",
     //   "filter": 0
     // }
     public class KeywordExtractionRequest
